@@ -1,0 +1,99 @@
+\documentclass[a4sheet,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\setlength{\parskip}{2em}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{geometry}
+\usepackage{multicol}
+\setlength{\columnsep}{-7cm}
+\geometry{margin=1.1in}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{array, tabularx, caption, boldline}
+\usepackage{graphicx}
+\usepackage{epstopdf,epsfig}
+\usepackage{textgreek}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{subfigure}\usepackage{float}\usepackage{epsfig}
+\usepackage{amssymb}\usepackage{psfrag}
+\usepackage{stmaryrd}
+\usepackage{picture}
+\usepackage{float}
+\usepackage{bm}
+\DeclareMathAlphabet{\mathsfit}{T1}{\sfdefault}{\mddefault}{\sldefault}
+\SetMathAlphabet{\mathsfit}{bold}{T1}{\sfdefault}{\bfdefault}{\sldefault}
+\usepackage[colorlinks=true,breaklinks=true,linkcolor=blue]{hyperref}
+\usepackage{chngcntr}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}{Example}[section]
+\numberwithin{equation}{section}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\usepackage{mathtools}
+\usepackage[nottoc]{tocbibind}
+\usepackage[
+backend=biber,
+style=ieee,
+]{biblatex}
+\addbibresource{References.bib}
+\begin{document}
+\section{Deep Hidden Physics Models}\cite{raissi2018deep}
+This work has developed deep learning techniques to discover non-linear partial differential equations from scattered and potentially noisy observations in space and time. 
+\begin{equation}
+    u_{t} = \mathcal{N}\left(t,x,u,u_{x},u_{xx},...\right)
+    \label{n}
+\end{equation}
+Where $\mathcal{N}$ is a nonlinear function of time $t$, space $x$, solution $u$, and its derivatives. We are interested to learn non-linear function $\mathcal{N}$ and consequently identifying an infinite dimensional dynamical system that governs the considered spatiotemporal data.The proposed methodology consists of two deep neural networks. The first network will find an unknown solution. The second neural helps construct the governing differential equation of a given spatiotemporal data  network and  represents the non-linear dynamics. Burgers', Korteweg-de Vries (KdV), Kuramoto-Sivashinsky, non-linear Schrodinger, and Navier-Stokes equations have been studied and used to demonstrate how the proposed framework will help us to learn underlying dynamics and forecast future states of the system.
+\begin{subsection}{Advantages:}
+\begin{itemize}
+    \item The proposed frame work helps to identify the governing partial differential equations and uncover the dynamics of a complex physical system from spatiotemporal data set.
+    \item Following is one of the approaches to learn the governing equation prior to the proposed work
+    \begin{multline}
+    \mathcal{N}\left(t,x,u,u_{x},u_{xx},...\right) = \alpha_{0,0} + \alpha_{1,0}u + \alpha_{2,0}u^{2} + \\
+    \alpha_{0,1}u_{x} + \alpha_{1,1}u u_{x}+\alpha_{2,1}u^{2}u_{x}+\\
+    \alpha_{0,2}u_{xx}+\alpha_{1,2}u u_{xx}+\alpha_{2,2}u^{2}u_{xx}+...
+    \label{str}
+    \end{multline}
+    \item In general we construct structured nonlinear regression model $\left(\ref{str}\right)$ to study the dynamics and to find the closed form solution to forecast future states of the physical system from the provided spatiotemporal data set. This method highly relies on numerical approximation of derivatives that are inherently ill-conditioned and unstable. To avoid this, in the proposed work we compute the derivatives of he first neural network with respect to time and space using symbolic or automatic differentiation.
+    \item The above mentioned method $\left(\ref{str}\right)$ can only estimate parameters appearing as coefficients and as the dimension increases the terms to include in the expansion increases exponentially. this issue is addressed by second neural network as deep neural networks are a richer family of function approximators.
+\end{itemize}
+\end{subsection}
+\begin{subsection}{Limitations:}
+\begin{itemize}
+    \item To validate performance of the proposed approach physics informed surrogate models are used (black box solvers).
+    \item By varying the parameters the system may go through the bifurcations, the proposed framework is not generalised to represent such phenomenons. To capture such dynamics of the system we need new data set measured by varying the parameters.  
+    \item Extension is required to proposed methodology to study the non linear functions other than the form defined in \ref{n}
+\end{itemize}
+\end{subsection}
+\begin{section}{Physics-Informed Kriging-PhIK}\cite{yang2018physics}
+In the present work authors have proposed Physics informed Kriging (PhIK) which is a new Gaussian process regression method. In general Kriging model, the unknown function is treated as a Gaussian process with assumed stationary covariance with hyperparameters estimated using data whereas in PhIK, mean and covariance of the Gaussian process are computed from realization of available stochastic models. Resulting predictions from the defined model will adhere to the physical constraints of a problem and error estimate in preserving the physical constraint when errors are included in the stochastic model realization is provided in this work. Multi level Monte Carlo estimate of the mean and covariance function are proposed to reduce the computational cost to obtain stochastic model realizations. Further Active learning algorithm is implemented to select the next candidate point to train the Kriging model. Efficiency and performance of the PhIK  is demonstrated using branin function and learning a conservative tracer distribution from sparse concentration.
+\begin{subsection}{Advantages}
+\begin{itemize}
+    \item In general, mean and covariance are the characteristics of the Gaussian process regression. We need to assume specific mean(stationary for simplification) and kernel/correlation function in order to establish the correlation between the data and estimate hyperparameters of the surrogate model. In this PhIK there is no need to assume the a specific correlation function and to solve optimization problem for the hyperparameters, since the domain knowledge exists in the form of realization of stochastic model of the observed system.
+    \item assuming stationarity of the Gaussian Process is not necessary 
+    \item No assumption regarding the form of Kernel/correlation function
+    \item Not required to solve the optimization Problem to estimate the hyperparameters. The optimization problem itself is a challenging task since it may encounters ill conditioned covariance matrix.
+    \item Most importantly physical constraints are incorporated into the method through mean and covariance matrix.
+    \item This model inherently include the random processes or random fields or random parameters to reflect the lack of understanding or knowledge of of the physical model.
+\end{itemize}
+\end{subsection}
+\begin{subsection}{Limitations:}
+\begin{itemize}
+    \item Prediction of the mean and mean square error (MSE) involves inverting the covariance matrix. As the training iteration increases size of the covariance matrix increase, since covariance matrix will be symmetric we can apply cholesky factorization to calculate its inverse.
+    \item Active learning will identify the next query element in order to minimize the prediction error or MSE or uncertainty. Better the sample plan defined over the search space better the performance of Active learning algorithm.
+    \item Gaussian process as a surrogate model in Kriging will the predict the function value with less error if the location is inside the domain of points considered to train the model. Because error in kriging is dominated by extrapolation error. 
+\end{itemize}
+\newpage
+\end{subsection}
+\begin{section}{Part-b}
+links to the github pages:\\
+1.\href{https://sumanthk94.github.io}{Home page}\\
+2. \href{https://sumanthk94.github.io/sumanthk94.github.io-prj/}{Project page}
+\end{section}
+\end{section}
+\printbibliography
+\end{document}
